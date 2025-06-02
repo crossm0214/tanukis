@@ -1,0 +1,135 @@
+body {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #FFF3E0;
+    color: #5D4037;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    color: #FF8F00;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 0 #FFF, -2px -2px 0 #FFF,
+                 2px -2px 0 #FFF, -2px 2px 0 #FFF;
+    margin-bottom: 30px;
+}
+
+.game-info {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.score, .time {
+    background-color: #FFE0B2;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.game-area {
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+#animal-image {
+    max-width: 300px;
+    margin: 20px 0;
+    border-radius: 15px;
+    transition: opacity 0.2s ease;
+}
+
+#animal-image:hover {
+    transform: scale(1.05);
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #FF9800;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background-color: #F57C00;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.result {
+    margin-top: 20px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.result h2 {
+    color: #FF8F00;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.result p {
+    font-size: 1.3em;
+    margin-bottom: 25px;
+}
+
+.restart-button {
+    background-color: #4CAF50;
+}
+
+.restart-button:hover {
+    background-color: #45a049;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+.score-pop {
+    animation: pop 0.2s ease;
+}
+
+.result-message {
+    font-size: 1.2em;
+    color: #FF8F00;
+    margin: 15px 0;
+    font-weight: bold;
+}

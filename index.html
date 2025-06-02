@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ぽんぽこパニック！</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>ぽんぽこパニック！</h1>
+        <div class="game-info">
+            <div class="score">スコア: <span id="score">0</span></div>
+            <div class="time">のこり: <span id="time">30</span>びょう</div>
+        </div>
+        <div class="game-area">
+            <img id="animal-image" src="" alt="どうぶつ">
+            <div class="buttons">
+                <button onclick="checkAnswer('raccoon')">アライグマ</button>
+                <button onclick="checkAnswer('tanuki')">たぬき</button>
+                <button onclick="checkAnswer('redpanda')">レッサーパンダ</button>
+            </div>
+        </div>
+        <div id="result" class="result hidden">
+            <h2>おしまい！</h2>
+            <p>きみのスコアは: <span id="final-score">0</span>てん！</p>
+            <button onclick="startGame()" class="restart-button">もういちどあそぶ！</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
