@@ -35,46 +35,6 @@ let mistakeCount = 0;
 const MAX_MISTAKES = 5;
 const MAX_RANKING_ENTRIES = 10;
 
-// 画像プリロード用の配列
-const imagesToLoad = [];
-let loadedImages = 0;
-
-// 画像をプリロードする関数
-function preloadImages() {
-    // 全ての動物の画像をリストに追加
-    animals.forEach(animal => {
-        imagesToLoad.push(animal.image);
-        imagesToLoad.push(animal.happyImage);
-        imagesToLoad.push(animal.sadImage);
-    });
-    
-    // シロクマの画像を追加
-    imagesToLoad.push(polarBear.image);
-    imagesToLoad.push(polarBear.angryImage);
-
-    return new Promise((resolve) => {
-        if (imagesToLoad.length === 0) {
-            resolve();
-            return;
-        }
-
-        imagesToLoad.forEach(src => {
-            const img = new Image();
-            img.onload = () => {
-                loadedImages++;
-                const progress = (loadedImages / imagesToLoad.length) * 100;
-                document.getElementById('loading-bar').style.width = `${progress}%`;
-                document.getElementById('loading-text').textContent = `${Math.round(progress)}%`;
-                
-                if (loadedImages === imagesToLoad.length) {
-                    resolve();
-                }
-            };
-            img.src = src;
-        });
-    });
-}
-
 // ローカルストレージからランキングを取得する関数
 function getRanking() {
     const ranking = localStorage.getItem('ponpokoRanking');
@@ -183,17 +143,12 @@ function startGame() {
     document.getElementById('score').textContent = score;
     document.getElementById('time').textContent = timeLeft;
     document.getElementById('mistakes').textContent = mistakeCount;
-    document.getElementById('time-bar').style.width = '100%';
     canAnswer = true;
     
     showRandomAnimal();
     gameTimer = setInterval(() => {
         timeLeft--;
         document.getElementById('time').textContent = timeLeft;
-        // プログレスバーの更新
-        const progressPercentage = (timeLeft / 30) * 100;
-        document.getElementById('time-bar').style.width = `${progressPercentage}%`;
-        
         if (timeLeft <= 0) {
             endGame(false);
         }
@@ -211,7 +166,7 @@ function showRandomAnimal() {
         img.src = currentAnimal.image;
         img.style.opacity = '1';
         canAnswer = true;
-    }, 100);
+    }, 200);
 }
 
 // リアクションを表示して次の動物を表示する関数
@@ -297,12 +252,7 @@ function endGame(isPolarBearEnd = false) {
 
 // イベントリスナーの設定
 window.onload = function() {
-    document.getElementById('start-button').addEventListener('click', async () => {
-        document.getElementById('loading-screen').style.display = 'flex';
-        await preloadImages();
-        document.getElementById('loading-screen').style.display = 'none';
-        startGame();
-    });
+    document.getElementById('start-button').addEventListener('click', startGame);
     document.getElementById('ranking-button').addEventListener('click', showRanking);
-    returnToTitle();
+    returnToTitle(); // 初期画面の表示
 };
