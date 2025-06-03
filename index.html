@@ -10,22 +10,50 @@
 <body>
     <div class="container">
         <h1>ぽんぽこパニック！</h1>
-        <div class="game-info">
-            <div class="score">スコア: <span id="score">0</span></div>
-            <div class="time">のこり: <span id="time">30</span>びょう</div>
+        
+        <!-- スタート画面 -->
+        <div id="start-screen">
+            <button id="start-button" class="big-button">はじめる！</button>
+            <button id="ranking-button" class="big-button">ランキング</button>
         </div>
-        <div class="game-area">
-            <img id="animal-image" src="" alt="どうぶつ">
-            <div class="buttons">
-                <button onclick="checkAnswer('raccoon')">アライグマ</button>
-                <button onclick="checkAnswer('tanuki')">たぬき</button>
-                <button onclick="checkAnswer('redpanda')">レッサーパンダ</button>
+
+        <!-- ゲーム画面 -->
+        <div id="game-screen" class="hidden">
+            <div class="game-info">
+                <div class="score">スコア: <span id="score">0</span></div>
+                <div class="mistakes">まちがい: <span id="mistakes">0</span>/<span id="max-mistakes">5</span></div>
+                <div class="time">のこり: <span id="time">30</span>びょう</div>
+            </div>
+            <div class="game-area">
+                <img id="animal-image" src="" alt="どうぶつ">
+                <div class="buttons">
+                    <button onclick="checkAnswer('raccoon')">アライグマ</button>
+                    <button onclick="checkAnswer('tanuki')">たぬき</button>
+                    <button onclick="checkAnswer('redpanda')">レッサーパンダ</button>
+                </div>
             </div>
         </div>
+
+        <!-- 結果画面 -->
         <div id="result" class="result hidden">
             <h2>おしまい！</h2>
             <p>きみのスコアは: <span id="final-score">0</span>てん！</p>
-            <button onclick="startGame()" class="restart-button">もういちどあそぶ！</button>
+            <div id="name-entry" class="name-entry">
+                <p>ランキングに登録しよう！</p>
+                <input type="text" id="player-name" placeholder="なまえを入れてね" maxlength="10">
+                <button onclick="submitScore()" class="submit-button">とうろく</button>
+            </div>
+            <button onclick="showRanking()" class="ranking-button">ランキングをみる</button>
+            <button onclick="returnToTitle()" class="restart-button">タイトルにもどる</button>
+        </div>
+
+        <!-- ランキング画面 -->
+        <div id="ranking-screen" class="ranking-screen hidden">
+            <h2>ランキング</h2>
+            <div id="ranking-list" class="ranking-list">
+                <!-- ランキングはJavaScriptで動的に生成 -->
+            </div>
+            <button onclick="returnToTitle()" class="return-button">タイトルにもどる</button>
         </div>
     </div>
     <script src="script.js"></script>
