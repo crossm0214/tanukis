@@ -29,7 +29,7 @@ h1 {
     font-weight: bold;
 }
 
-.score, .time {
+.score, .time, .mistakes {
     background-color: #FFE0B2;
     padding: 10px 20px;
     border-radius: 20px;
@@ -113,10 +113,73 @@ button:active {
     background-color: #45a049;
 }
 
-.hidden {
-    display: none;
+/* スタート画面 */
+#start-screen {
+    text-align: center;
+    padding: 40px;
 }
 
+.big-button {
+    font-size: 1.5em;
+    padding: 15px 40px;
+    margin: 10px;
+    min-width: 200px;
+}
+
+/* ランキング画面 */
+.ranking-screen {
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.ranking-list {
+    margin: 20px 0;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #FFE0B2;
+    font-size: 1.2em;
+}
+
+.ranking-position {
+    font-weight: bold;
+    color: #FF8F00;
+    width: 40px;
+}
+
+/* 名前入力フォーム */
+.name-entry {
+    margin: 20px 0;
+}
+
+#player-name {
+    padding: 10px;
+    font-size: 1.2em;
+    border: 2px solid #FFE0B2;
+    border-radius: 10px;
+    margin: 10px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+.submit-button {
+    background-color: #4CAF50;
+    margin: 10px;
+}
+
+.return-button {
+    background-color: #FF9800;
+    margin-top: 20px;
+}
+
+/* アニメーション */
 @keyframes pop {
     0% { transform: scale(1); }
     50% { transform: scale(1.08); }
@@ -127,9 +190,24 @@ button:active {
     animation: pop 0.2s ease;
 }
 
+@keyframes mistake-flash {
+    0% { background-color: #FFE0B2; }
+    50% { background-color: #FFCDD2; }
+    100% { background-color: #FFE0B2; }
+}
+
+.mistake-animation {
+    animation: mistake-flash 0.5s ease;
+}
+
 .result-message {
     font-size: 1.2em;
     color: #FF8F00;
     margin: 15px 0;
     font-weight: bold;
+}
+
+/* 共通のユーティリティクラス */
+.hidden {
+    display: none;
 }
