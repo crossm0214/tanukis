@@ -19,18 +19,121 @@ const animals = [
     }
 ];
 
+const polarBear = {
+    id: 'polarbear',
+    image: 'images/polarbear.png',
+    angryImage: 'images/polarbear_angry.png'
+};
+
 let currentAnimal;
 let score = 0;
 let timeLeft = 30;
 let gameTimer;
 let canAnswer = true;
+let isGameActive = false;
+let mistakeCount = 0;
+const MAX_MISTAKES = 5;
+const MAX_RANKING_ENTRIES = 10;
 
+// ローカルストレージからランキングを取得する関数
+function getRanking() {
+    const ranking = localStorage.getItem('ponpokoRanking');
+    return ranking ? JSON.parse(ranking) : [];
+}
+
+// ランキングを保存する関数
+function saveRanking(ranking) {
+    localStorage.setItem('ponpokoRanking', JSON.stringify(ranking));
+}
+
+// スコアを登録する関数
+function submitScore() {
+    const playerName = document.getElementById('player-name').value.trim();
+    if (!playerName) {
+        alert('なまえを入れてね！');
+        return;
+    }
+
+    const ranking = getRanking();
+    ranking.push({
+        name: playerName,
+        score: score,
+        date: new Date().toISOString()
+    });
+
+    // スコアで降順ソート
+    ranking.sort((a, b) => b.score - a.score);
+    
+    // 上位10件のみ保持
+    if (ranking.length > MAX_RANKING_ENTRIES) {
+        ranking.length = MAX_RANKING_ENTRIES;
+    }
+
+    saveRanking(ranking);
+    showRanking();
+}
+
+// ランキングを表示する関数
+function showRanking() {
+    const ranking = getRanking();
+    const rankingList = document.getElementById('ranking-list');
+    rankingList.innerHTML = '';
+
+    ranking.forEach((entry, index) => {
+        const item = document.createElement('div');
+        item.className = 'ranking-item';
+        item.innerHTML = `
+            <span class="ranking-position">${index + 1}位</span>
+            <span class="ranking-name">${entry.name}</span>
+            <span class="ranking-score">${entry.score}てん</span>
+        `;
+        rankingList.appendChild(item);
+    });
+
+    // 画面の切り替え
+    hideAllScreens();
+    document.getElementById('ranking-screen').classList.remove('hidden');
+}
+
+// タイトルに戻る関数
+function returnToTitle() {
+    hideAllScreens();
+    document.getElementById('start-screen').classList.remove('hidden');
+}
+
+// 全画面を非表示にする関数
+function hideAllScreens() {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('game-screen').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('ranking-screen').classList.add('hidden');
+}
+
+// シロクマ表示とゲームオーバー
+function showPolarBearAndEnd() {
+    const img = document.getElementById('animal-image');
+    img.src = polarBear.image;
+    
+    setTimeout(() => {
+        img.src = polarBear.angryImage;
+        setTimeout(() => {
+            endGame(true);
+        }, 1000);
+    }, 1000);
+}
+
+// ゲーム開始関数
 function startGame() {
+    hideAllScreens();
+    document.getElementById('game-screen').classList.remove('hidden');
+    
     score = 0;
     timeLeft = 30;
+    mistakeCount = 0;
+    isGameActive = true;
     document.getElementById('score').textContent = score;
     document.getElementById('time').textContent = timeLeft;
-    document.getElementById('result').classList.add('hidden');
+    document.getElementById('mistakes').textContent = mistakeCount;
     canAnswer = true;
     
     showRandomAnimal();
@@ -38,11 +141,12 @@ function startGame() {
         timeLeft--;
         document.getElementById('time').textContent = timeLeft;
         if (timeLeft <= 0) {
-            endGame();
+            endGame(false);
         }
     }, 1000);
 }
 
+// ランダムな動物を表示する関数
 function showRandomAnimal() {
     const img = document.getElementById('animal-image');
     img.style.opacity = '0';
@@ -56,6 +160,7 @@ function showRandomAnimal() {
     }, 200);
 }
 
+// リアクションを表示して次の動物を表示する関数
 function showReactionAndProceed(isCorrect) {
     const img = document.getElementById('animal-image');
     img.src = isCorrect ? currentAnimal.happyImage : currentAnimal.sadImage;
@@ -65,8 +170,9 @@ function showReactionAndProceed(isCorrect) {
     }, 400);
 }
 
+// 回答をチェックする関数
 function checkAnswer(answer) {
-    if (!canAnswer) return;
+    if (!canAnswer || !isGameActive) return;
     
     canAnswer = false;
     const isCorrect = answer === currentAnimal.id;
@@ -79,19 +185,37 @@ function checkAnswer(answer) {
         setTimeout(() => {
             scoreElement.parentElement.classList.remove('score-pop');
         }, 200);
+    } else {
+        mistakeCount++;
+        document.getElementById('mistakes').textContent = mistakeCount;
+        document.querySelector('.mistakes').classList.add('mistake-animation');
+        setTimeout(() => {
+            document.querySelector('.mistakes').classList.remove('mistake-animation');
+        }, 500);
+
+        if (mistakeCount >= MAX_MISTAKES) {
+            showPolarBearAndEnd();
+            return;
+        }
     }
     
     showReactionAndProceed(isCorrect);
 }
 
-function endGame() {
+// ゲーム終了関数
+function endGame(isPolarBearEnd = false) {
+    isGameActive = false;
     clearInterval(gameTimer);
     document.getElementById('final-score').textContent = score;
+    
+    hideAllScreens();
     const resultDiv = document.getElementById('result');
     resultDiv.classList.remove('hidden');
     
     const message = document.createElement('p');
-    if (score >= 1500) {
+    if (isPolarBearEnd) {
+        message.textContent = "シロクマに怒られちゃった！もっと慎重に答えよう！";
+    } else if (score >= 1500) {
         message.textContent = "すごい！たぬきマスターだね！";
     } else if (score >= 1000) {
         message.textContent = "なかなかの動物博士！";
@@ -110,4 +234,9 @@ function endGame() {
     resultDiv.insertBefore(message, resultDiv.querySelector('button'));
 }
 
-window.onload = startGame;
+// イベントリスナーの設定
+window.onload = function() {
+    document.getElementById('start-button').addEventListener('click', startGame);
+    document.getElementById('ranking-button').addEventListener('click', showRanking);
+    returnToTitle(); // 初期画面の表示
+};
