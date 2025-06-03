@@ -119,6 +119,24 @@ button:active {
     padding: 40px;
 }
 
+.title-image {
+    margin: 20px auto 30px;
+    max-width: 500px;
+    padding: 0 20px;
+}
+
+.title-illustration {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.title-illustration:hover {
+    transform: scale(1.02);
+}
+
 .big-button {
     font-size: 1.5em;
     padding: 15px 40px;

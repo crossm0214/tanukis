@@ -125,10 +125,10 @@ function showPolarBearAndEnd() {
                 img.style.opacity = '1';
                 setTimeout(() => {
                     endGame(true);
-                }, 1000);
-            }, 200);
-        }, 1000);
-    }, 200);
+                }, 500);
+            }, 100);
+        }, 500);
+    }, 100);
 }
 
 // ゲーム開始関数
@@ -182,8 +182,8 @@ function showReactionAndProceed(isCorrect) {
             if (isGameActive) {
                 showRandomAnimal();
             }
-        }, 800);
-    }, 200);
+        }, 300);
+    }, 100);
 }
 
 // 回答をチェックする関数
